@@ -3,7 +3,12 @@ module testbench;
 	reg instr_v;
 	reg [1:0] pred_res;
 	wire [1:0] pred;
-
+	
+	//parameters 
+	parameter T1=0;
+	parameter T2=0;
+    parameter NUM_INSTR = 16;
+	
 	two_bit dut(
 		// DUT input
 		.clk(clk), 							// clock
@@ -28,61 +33,33 @@ module testbench;
 		
 		#10 ares = 0;
 		
-		// new instruction
-		#10 instr_v = 1;
+		// launch instruction
+		#(T1*2) instr_v = 1;
 		#2  instr_v = 0;
 		
-		#10 pred_res = 2'b01;
+		for (int i = 1; i < NUM_INSTR; i++) begin
+			// commit instruction
+			if (i<4) begin
+				#(T2*2) pred_res = 2'b01;
+				#2  pred_res[0] = 0;
+			end
+			else if (i<9) begin
+				#(T2*2) pred_res = 2'b11;
+				#2  pred_res[0] = 0;
+			end
+			else begin
+				#(T2*2) pred_res = {$urandom_range(0,1),1'b1};
+				#2  pred_res[0] = 0;
+			end
+			
+			// launch instruction
+			#(T1*2) instr_v = 1;
+			#2  instr_v = 0;
+		end
+		
+		#(T2*2) pred_res = 2'b01;
 		#2  pred_res[0] = 0;
-		
-		// new instruction
-		#10 instr_v = 1;
-		#2  instr_v = 0;
-		
-		#10 pred_res = 2'b01;
-		#2  pred_res[0] = 0;
-		
-		// new instruction
-		#10 instr_v = 1;
-		#2  instr_v = 0;
-		
-		#10 pred_res = 2'b11;
-		#2  pred_res[0] = 0;
-		
-		// new instruction
-		#10 instr_v = 1;
-		#2  instr_v = 0;
-		
-		#10 pred_res = 2'b11;
-		#2  pred_res[0] = 0;
-		
-		// new instruction
-		#10 instr_v = 1;
-		#2  instr_v = 0;
-		
-		#10 pred_res = 2'b11;
-		#2  pred_res[0] = 0;
-		
-		// new instruction
-		#10 instr_v = 1;
-		#2  instr_v = 0;
-		
-		#10 pred_res = 2'b11;
-		#2  pred_res[0] = 0;
-		
-		// new instruction
-		#10 instr_v = 1;
-		#2  instr_v = 0;
-		
-		#10 pred_res = 2'b11;
-		#2  pred_res[0] = 0;
-		
-		// new instruction
-		#10 instr_v = 1;
-		#2  instr_v = 0;
-		
-		#10 pred_res = 2'b01;
-		#2  pred_res[0] = 0;
+				
 		
 		
 	end

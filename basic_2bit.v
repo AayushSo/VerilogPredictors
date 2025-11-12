@@ -9,7 +9,7 @@ module two_bit(
 );
 
 	reg [1:0] pred_state;
-	wire [1:0] pred_state_next;
+	reg [1:0] pred_state_next;
 
 	always@* begin
 		pred_state_next = pred_state;
