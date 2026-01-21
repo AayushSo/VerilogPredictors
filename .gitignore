@@ -1,0 +1,10 @@
+# Ignore the compiled simulation executables
+*.vvp
+*.out
+
+# Ignore the waveform dump files
+*.vcd
+*.lxt
+
+# Ignore temporary editor files (optional but good to have)
+*.swp
