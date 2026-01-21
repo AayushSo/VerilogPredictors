@@ -1,3 +1,6 @@
+`timescale 1ns/1ps
+
+
 module SRAM_dp
 	#(
 		parameter ADD_W = 4, 	// address width
@@ -17,14 +20,14 @@ module SRAM_dp
 	
 	localparam NUM_ADDR = 2**ADD_W;
 	reg [DAT_W-1:0] sram [NUM_ADDR-1:0];
-	
+	integer i;
 	// Write logic
 	always@(posedge clk or posedge ares) begin
 		if (ares) begin
-			for (int i=0; i<NUM_ADDR; i ++) sram[i] <= 'b0;
+			for (i=0; i<NUM_ADDR; i=i+1) sram[i] <= 'b0;
 		end
 		else if (sync_reset) begin
-			for (int i=0; i<NUM_ADDR; i ++) sram[i] <= 'b0;
+			for (i=0; i<NUM_ADDR; i=i+1) sram[i] <= 'b0;
 		end
 		else begin
 			if (wen) sram[waddr] <= wdata;
@@ -39,14 +42,14 @@ module SRAM_dp
 			
 			always@(posedge clk or posedge ares) begin
 				if (ares) begin
-					for (int i=0; i<DELAY; i ++) read_pipeline[i] <= 'b0;
+					for (i=0; i<DELAY; i=i+1) read_pipeline[i] <= 'b0;
 				end
 				else if (sync_reset) begin
-					for (int i=0; i<DELAY; i ++) read_pipeline[i] <= 'b0;
+					for ( i=0; i<DELAY; i=i+1) read_pipeline[i] <= 'b0;
 				end
 				else begin
 					read_pipeline[0] <= ren ? {sram[raddr],ren} : 'b0;
-					for (int i=1; i<DELAY; i ++) read_pipeline[i] <= read_pipeline[i-1];
+					for (i=1; i<DELAY; i=i+1) read_pipeline[i] <= read_pipeline[i-1];
 				end
 			end
 			
