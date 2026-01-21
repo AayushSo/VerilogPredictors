@@ -1,4 +1,4 @@
-module testbench;
+module tb_event;
 	reg clk,ares,sync_reset;
 	reg instr_v;
 	reg [1:0] pred_res;
@@ -13,6 +13,8 @@ module testbench;
     //  instruction to result delay 
     parameter RESULT_MIN_DELAY = 0;     
     parameter RESULT_MAX_DELAY = T * 3; 
+	
+	integer i;
     
 	// event array
     //event instr_sent[NUM_INSTR];
@@ -56,7 +58,7 @@ module testbench;
         fork
             //  THREAD 1: Controls instr_v 
             begin
-                for (int i = 0; i < NUM_INSTR; i++) begin
+                for (i = 0; i < NUM_INSTR; i=i+1) begin
                     #($urandom_range(INSTR_MAX_DELAY, INSTR_MIN_DELAY));
                     instr_v = 1;
                     #2;
@@ -68,7 +70,7 @@ module testbench;
 
             //  THREAD 2: Controls pred_res 
             begin
-                for (int i = 0; i < NUM_INSTR; i++) begin
+                for (i = 0; i < NUM_INSTR; i=i+1) begin
                     //@(instr_sent[i]);
 					wait (instr_sent[i]==1);
                     #($urandom_range(RESULT_MAX_DELAY, RESULT_MIN_DELAY));

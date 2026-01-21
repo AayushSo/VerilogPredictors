@@ -1,4 +1,8 @@
+/*
+2 bit global branch predictor.
+Same-cycle output of branch prediction based on a saturating counter.
 
+*/
 module two_bit(
 	input clk,ares,sync_reset,
 	input instr_valid,

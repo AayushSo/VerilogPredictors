@@ -9,6 +9,8 @@ module testbench;
 	parameter T2=0;
     parameter NUM_INSTR = 16;
 	
+	integer i;
+	
 	two_bit dut(
 		// DUT input
 		.clk(clk), 							// clock
@@ -37,7 +39,7 @@ module testbench;
 		#(T1*2) instr_v = 1;
 		#2  instr_v = 0;
 		
-		for (int i = 1; i < NUM_INSTR; i++) begin
+		for (i = 1; i < NUM_INSTR; i=i+1) begin
 			// commit instruction
 			if (i<4) begin
 				#(T2*2) pred_res = 2'b01;
